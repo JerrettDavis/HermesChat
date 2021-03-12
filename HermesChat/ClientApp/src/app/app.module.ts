@@ -10,6 +10,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from "./app-routing.module";
 import {NavMenuModule} from "./nav-menu/nav-menu.component";
 import {RouterModule} from "@angular/router";
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,9 @@ import {RouterModule} from "@angular/router";
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     BrowserAnimationsModule,
     NavMenuModule,
-    RouterModule
+    RouterModule,
+
+    MatSidenavModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true}

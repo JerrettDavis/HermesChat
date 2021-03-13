@@ -52,7 +52,8 @@ namespace HermesChat
                 ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, 
                     ConfigureJwtBearerOptions>());
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();;
             services.AddSignalR();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
@@ -65,6 +66,7 @@ namespace HermesChat
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
+                app.UseBrowserLink();
             }
             else
             {

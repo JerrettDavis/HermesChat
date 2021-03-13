@@ -1,0 +1,36 @@
+<mat-drawer-container class="app-drawer-container">
+  <mat-drawer mode="side" opened class="servers">
+    <div class="channel">
+      <mat-icon>person</mat-icon>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <mat-drawer-container class="app-drawer-container">
+      <mat-drawer mode="side" opened class="channels">
+        <mat-toolbar>
+          HOME-CHANNEL
+        </mat-toolbar>
+        <div class="channel-list flex-grow-1">
+
+        </div>
+        <mat-toolbar class="user-data-container">
+          <div class="user-data d-flex">
+            <div class="user-icon">
+              <mat-icon>person</mat-icon>
+            </div>
+            <div class="username">{{user.name}}</div>
+          </div>
+        </mat-toolbar>
+      </mat-drawer>
+      <mat-drawer-content class="">
+        <mat-toolbar class="d-flex align-middle">
+          <div class="d-flex hash-icon"><mat-icon>tag</mat-icon></div>
+          <span class="channel-name">general</span>
+        </mat-toolbar>
+        <div class="router-content flex-grow-1">
+          <router-outlet></router-outlet>
+        </div>
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </mat-drawer-content>
+</mat-drawer-container>

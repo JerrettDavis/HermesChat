@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { User, UserManager, WebStorageStateStore } from 'oidc-client';
-import { BehaviorSubject, concat, from, Observable } from 'rxjs';
-import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
-import { ApplicationPaths, ApplicationName } from './api-authorization.constants';
+import {Injectable} from '@angular/core';
+import {User, UserManager} from 'oidc-client';
+import {BehaviorSubject, concat, from, Observable} from 'rxjs';
+import {filter, map, mergeMap, take, tap} from 'rxjs/operators';
+import {ApplicationName, ApplicationPaths} from './api-authorization.constants';
 
 export type IAuthenticationResult =
   SuccessAuthenticationResult |
@@ -31,6 +31,7 @@ export enum AuthenticationResultStatus {
 
 export interface IUser {
   name?: string;
+  userIdentifier?: string;
 }
 
 @Injectable({
@@ -154,19 +155,19 @@ export class AuthorizeService {
   }
 
   private createArguments(state?: any): any {
-    return { useReplaceToNavigate: true, data: state };
+    return {useReplaceToNavigate: true, data: state};
   }
 
   private error(message: string): IAuthenticationResult {
-    return { status: AuthenticationResultStatus.Fail, message };
+    return {status: AuthenticationResultStatus.Fail, message};
   }
 
   private success(state: any): IAuthenticationResult {
-    return { status: AuthenticationResultStatus.Success, state };
+    return {status: AuthenticationResultStatus.Success, state};
   }
 
   private redirect(): IAuthenticationResult {
-    return { status: AuthenticationResultStatus.Redirect };
+    return {status: AuthenticationResultStatus.Redirect};
   }
 
   private async ensureUserManagerInitialized(): Promise<void> {

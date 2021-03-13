@@ -1,41 +1,5 @@
 <mat-card>
-  <div>
-    <div class="welcome">
-      <h1 mat-card-title>Welcome to Hermes Chat</h1>
-      <h2 mat-card-subtitle>This is the beginning of the chat.</h2>
-    </div>
-    <mat-divider></mat-divider>
-    <div class="spacer" *ngIf="messages && messages.length > 0"></div>
-    <div class="message-container" *ngFor="let message of messages">
-      <div class="icon">
-        <mat-icon>person</mat-icon>
-      </div>
-      <div class="message">
-        <div class="user-row">
-          <div class="message-user">{{message.user}}</div>
-          <div class="message-date" [matTooltip]="message.date | date: 'medium'">
-            <span *ngIf="isToday(message.date)">
-              Today at {{ message.date | date: 'shortTime' }}
-            </span>
-            <span *ngIf="!isToday(message.date)">
-              Today at {{ message.date | date: 'shortDate' }}
-            </span>
-          </div>
-        </div>
-        <div class="message-row">
-          {{message.message}}
-        </div>
-      </div>
-    </div>
-  </div>
-  <mat-divider></mat-divider>
-  <mat-card-actions>
-    <form [formGroup]="form" (ngSubmit)="send()" class="d-flex align-items-center">
-      <mat-form-field class="flex-grow-1">
-        <mat-label>Message</mat-label>
-        <input matInput formControlName="message" placeholder="What do you want to send?" autocomplete="off">
-      </mat-form-field>
-      <button mat-mini-fab color="primary" [disabled]="form.pristine || form.invalid"><mat-icon>send</mat-icon></button>
-    </form>
-  </mat-card-actions>
+  <mat-card-title>Welcome to Hermes</mat-card-title>
+  <mat-card-subtitle>You must sign in</mat-card-subtitle>
+  <button mat-raised-button color="primary" [routerLink]="loginPath">LOG IN</button>
 </mat-card>

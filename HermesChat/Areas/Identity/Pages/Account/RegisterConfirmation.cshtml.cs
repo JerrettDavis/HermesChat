@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
 using System.Text;
 using System.Threading.Tasks;
-using HermesChat.Models;
+using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;

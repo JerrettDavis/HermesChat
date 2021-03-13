@@ -1,23 +1,20 @@
-using System.Threading.Tasks;
-using HermesChat.Common.Identity;
-using Microsoft.AspNetCore.Authentication;
+using System.Linq;
+using Application.Common.Extensions;
+using Application.Common.Interfaces;
+using HermesChat.Common.Filters;
+using HermesChat.Hubs;
+using HermesChat.Services;
+using Infrastructure.Common.Extensions;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
-using HermesChat.Data;
-using HermesChat.Hubs;
-using HermesChat.Models;
-using HermesChat.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 
 namespace HermesChat
 {
@@ -33,30 +30,47 @@ namespace HermesChat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddDatabaseDeveloperPageExceptionFilter();
-
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
-                .AddProfileService<ProfileService>();
-
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
-            services.TryAddEnumerable(
-                ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, 
-                    ConfigureJwtBearerOptions>());
+            services
+                .AddApplication()
+                .AddInfrastructure(Configuration)
+                .AddScoped<ICurrentUserService, CurrentUserService>()
+                .AddHttpContextAccessor()
+                .AddDatabaseDeveloperPageExceptionFilter()
+                .AddSignalR();
+            
+            services.AddHealthChecks()
+                .AddDbContextCheck<ApplicationDbContext>();
+            
+            services.AddControllersWithViews(options => 
+                options.Filters.Add(new ApiExceptionFilter()));
+            
             services.AddControllersWithViews();
+            
             services.AddRazorPages()
-                .AddRazorRuntimeCompilation();;
-            services.AddSignalR();
+                .AddRazorRuntimeCompilation();
+            
+            // Customise default API behaviour
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+            
+            services.AddOpenApiDocument(configure =>
+            {
+                configure.Title = "CleanTesting API";
+                configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Description = "Type into the textbox: Bearer {your JWT token}."
+                });
+
+                configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,12 +89,19 @@ namespace HermesChat
                 app.UseHsts();
             }
 
+            app.UseHealthChecks("/health");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
+            
+            app.UseSwaggerUi3(settings =>
+            {
+                settings.Path = "/api";
+                settings.DocumentPath = "/api/specification.json";
+            });
 
             app.UseRouting();
 

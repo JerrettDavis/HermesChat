@@ -1,0 +1,91 @@
+mat-card {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+}
+
+.mat-card>:first-child, .mat-card-content>:first-child {
+  margin-top:8px;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.2);
+  border-radius: 11px;
+}
+::-webkit-scrollbar-thumb:hover{
+  background: #777;
+}
+::-webkit-scrollbar-track{
+  background: rgba(0,0,0,.1);
+  border-radius: 10px;
+}
+
+mat-card-actions {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.outer-message-container {
+  max-height: 100%;
+  overflow: auto;
+  padding: 8px;
+  margin: 8px;
+}
+
+hr {
+  border-color: #666;
+}
+
+.message-container {
+  display: flex;
+  margin-top: 16px;
+  margin-bottom:16px;
+
+  &:first-of-type {
+    margin-top:0;
+  }
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.minus-bottom {
+  height: calc(100% - 64px);
+}
+
+.spacer {
+  width: 100%;
+  height: 1px;
+}
+
+.icon {
+  border-radius: 32px;
+  width: 48px;
+  height: 48px;
+  background: rgba(0,0,0,0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right:16px;
+}
+
+.user-row {
+  display: flex;
+  align-items:baseline;
+}
+
+.message-user {
+  color: #00b1f5;
+  font-weight: 500;
+}
+
+.message-date {
+  color: #999;
+  margin-left: 8px;
+  font-size: 0.8em;
+}

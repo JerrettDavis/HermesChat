@@ -19,7 +19,7 @@ $HermesChat-accent: mat-palette($mat-pink, A200, A100, A400);
 $HermesChat-warn: mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$HermesChat-theme: mat-light-theme($HermesChat-primary, $HermesChat-accent, $HermesChat-warn);
+$HermesChat-theme: mat-dark-theme($HermesChat-primary, $HermesChat-accent, $HermesChat-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HermesChat", "HermesChat\HermesChat.csproj", "{F2A5B084-562B-408D-B49E-9C116A2AD055}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUi", "Src\WebUi\WebUi.csproj", "{F2A5B084-562B-408D-B49E-9C116A2AD055}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Src\Application\Application.csproj", "{F1AA5D0D-4C62-4F1D-ABC7-89E52423BFA7}"
 EndProject

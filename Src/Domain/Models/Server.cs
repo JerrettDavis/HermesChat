@@ -1,4 +1,4 @@
-﻿namespace HermesChat.Models
+﻿namespace Domain.Models
 {
     public class Server
     {

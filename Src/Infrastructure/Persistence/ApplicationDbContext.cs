@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Application.Common.Interfaces.Data;
 using Domain.Models;
-using HermesChat.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;

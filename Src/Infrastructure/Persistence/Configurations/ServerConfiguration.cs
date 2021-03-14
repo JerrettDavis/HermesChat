@@ -1,4 +1,4 @@
-﻿using HermesChat.Models;
+﻿using Domain.Models;
 using Infrastructure.Common.Genetators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

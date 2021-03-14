@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using HermesChat.Models;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Interfaces.Data

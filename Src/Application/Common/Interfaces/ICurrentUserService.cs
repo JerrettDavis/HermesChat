@@ -1,8 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Domain.Models;
-
-namespace Application.Common.Interfaces
+﻿namespace Application.Common.Interfaces
 {
     public interface ICurrentUserService
     {

@@ -7,8 +7,7 @@ using WebUi.Models.Responses.Servers;
 
 namespace WebUi.Controllers.Servers
 {
-    [Route("Api/[controller]")]
-    public class ServersController : ApiBaseController
+    public class Servers : ApiControllerBase
     {
         [HttpGet("{id}")]
         public async Task<IActionResult> GetServer(

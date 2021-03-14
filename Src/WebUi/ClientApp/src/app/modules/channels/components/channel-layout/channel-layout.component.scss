@@ -23,6 +23,17 @@
   justify-content: center;
   align-items: center;
   margin: 8px;
+  transition: all 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    * {
+      color: #fff !important;
+    }
+    color: #fff;
+    background-color: #00BCD4;
+    border-radius: 8px;
+  }
 }
 
 .hash-icon {
@@ -50,27 +61,8 @@ mat-toolbar {
 .channels {
   background-color: #373737;
 
-  mat-toolbar {
+  mat-toolbar:first-of-type {
     background-color: #373737;
   }
 }
 
-.user-icon {
-  border-radius: 32px;
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.15);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 4px;
-}
-
-.user-data-container {
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-.username {
-  font-size: 0.9em;
-}

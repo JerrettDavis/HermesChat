@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebUi.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class OidcConfigurationController : Controller
     {
         public OidcConfigurationController(

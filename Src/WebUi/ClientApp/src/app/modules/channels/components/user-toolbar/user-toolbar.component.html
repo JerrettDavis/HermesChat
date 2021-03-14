@@ -1,0 +1,17 @@
+<mat-toolbar class="user-data-container">
+  <div class="user-data d-flex align-items-center">
+    <div class="user-icon">
+      <mat-icon>person</mat-icon>
+    </div>
+    <div (click)="copyUsername()"
+         class="user-details clickable"
+         [matTooltip]="copyUsernameMessage"
+         [matTooltipClass]="tooltipClass">
+      <div class="username">{{user.name}}</div>
+      <div class="identifier">#{{user.userIdentifier}}</div>
+    </div>
+    <div class="actions">
+      <button mat-icon-button><mat-icon>settings</mat-icon></button>
+    </div>
+  </div>
+</mat-toolbar>

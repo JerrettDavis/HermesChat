@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Application.Common.Claims;
 using Domain.Models;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
@@ -90,11 +92,13 @@ namespace WebUi.Areas.Identity.Pages.Account
                 .FirstOrDefaultAsync(u => 
                     u.NormalizedEmail == Input.EmailOrUsername.ToUpper() ||
                     u.NormalizedUserName == Input.EmailOrUsername.ToUpper());
+            
             if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return Page();
             }
+            await _userManager.AddClaimAsync(user, new Claim(ApplicationClaimTypes.UserIdentifier, user.UserIdentifier));
             var result = await _signInManager.PasswordSignInAsync(
                 user, 
                 Input.Password, 

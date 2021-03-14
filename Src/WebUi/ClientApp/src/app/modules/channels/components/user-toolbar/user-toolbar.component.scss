@@ -1,0 +1,43 @@
+mat-toolbar {
+  background-color: #333;
+}
+
+.user-icon {
+  border-radius: 32px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4px;
+}
+
+.user-data-container {
+  padding-left: 4px;
+  padding-right: 4px;
+
+}
+
+.user-details {
+  margin-left: 4px;
+}
+
+.username, .identifier {
+  font-size: 14px;
+  line-height: initial;
+}
+
+.identifier {
+  color: #aaa;
+  margin-top:2px;
+}
+
+.actions {
+  margin-left: 8px;
+  color: #ccc;
+}
+
+::ng-deep .tooltip-success {
+  background-color: #42B581;
+}

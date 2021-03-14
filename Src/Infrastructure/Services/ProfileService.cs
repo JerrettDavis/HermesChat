@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Application.Common.Claims;
 using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
@@ -15,6 +16,8 @@ namespace Infrastructure.Services
         {
             var email = context.Subject.FindFirst(JwtClaimTypes.Email);
             var name = context.Subject.FindFirst(JwtClaimTypes.Name);
+            var identifier = context.Subject.FindFirst(ApplicationClaimTypes.UserIdentifier);
+            
             var roles = new List<Claim>();
             if (!string.IsNullOrEmpty(name?.Value))
             {
@@ -26,6 +29,9 @@ namespace Infrastructure.Services
             if (email != null)
                 roles.Add(email);
             
+            if (identifier != null)
+                roles.Add(identifier);
+
             context.IssuedClaims.AddRange(roles);
             return Task.CompletedTask;
         }

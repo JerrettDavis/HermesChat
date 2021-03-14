@@ -11,6 +11,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import {NavMenuModule} from "./nav-menu/nav-menu.component";
 import {RouterModule} from "@angular/router";
 import {MatSidenavModule} from "@angular/material/sidenav";
+import {ClipboardModule} from "@angular/cdk/clipboard";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
     BrowserAnimationsModule,
     NavMenuModule,
     RouterModule,
+    ClipboardModule,
 
     MatSidenavModule
   ],

@@ -1,6 +1,7 @@
 using System.Linq;
 using Application.Common.Extensions;
 using Application.Common.Interfaces;
+using FluentValidation.AspNetCore;
 using Infrastructure.Common.Extensions;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
@@ -44,7 +45,8 @@ namespace WebUi
                 .AddDbContextCheck<ApplicationDbContext>();
             
             services.AddControllersWithViews(options => 
-                options.Filters.Add(new ApiExceptionFilter()));
+                options.Filters.Add<ApiExceptionFilterAttribute>())
+                .AddFluentValidation();
             
             services.AddControllersWithViews();
             
@@ -62,7 +64,7 @@ namespace WebUi
             
             services.AddOpenApiDocument(configure =>
             {
-                configure.Title = "CleanTesting API";
+                configure.Title = "HermesChat API";
                 configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
                 {
                     Type = OpenApiSecuritySchemeType.ApiKey,
@@ -82,7 +84,6 @@ namespace WebUi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
-                app.UseBrowserLink();
             }
             else
             {

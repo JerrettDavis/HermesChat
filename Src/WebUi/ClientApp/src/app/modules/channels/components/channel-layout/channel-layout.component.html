@@ -4,7 +4,7 @@
       <mat-icon>person</mat-icon>
     </div>
     <div class="channel">
-      <mat-icon>add</mat-icon>
+      <mat-icon color="primary">add</mat-icon>
     </div>
   </mat-drawer>
   <mat-drawer-content>
@@ -16,14 +16,7 @@
         <div class="channel-list flex-grow-1">
 
         </div>
-        <mat-toolbar class="user-data-container">
-          <div class="user-data d-flex">
-            <div class="user-icon">
-              <mat-icon>person</mat-icon>
-            </div>
-            <div class="username">{{user.name}}</div>
-          </div>
-        </mat-toolbar>
+        <app-user-toolbar></app-user-toolbar>
       </mat-drawer>
       <mat-drawer-content class="">
         <mat-toolbar class="d-flex align-middle">

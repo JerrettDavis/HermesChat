@@ -9,8 +9,7 @@ const routes: Route[] = [
   {
     path: 'channels',
     loadChildren: () => import('./modules/channels/channels.module').then(m => m.ChannelsModule)
-  },
-  {path: '**', redirectTo: ''}
+  }
 ]
 
 @NgModule({

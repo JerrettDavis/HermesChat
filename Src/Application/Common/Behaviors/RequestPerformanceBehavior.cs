@@ -17,6 +17,7 @@ namespace Application.Common.Behaviors
         private readonly IIdentityService _identityService;
 
         public RequestPerformanceBehaviour(
+            // ReSharper disable once ContextualLoggerProblem
             ILogger<TRequest> logger, 
             ICurrentUserService currentUserService,
             IIdentityService identityService)

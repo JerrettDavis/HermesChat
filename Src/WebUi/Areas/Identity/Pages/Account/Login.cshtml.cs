@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebUi.Areas.Identity.Pages.Account
 {
+    [PublicAPI]
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
@@ -24,9 +26,13 @@ namespace WebUi.Areas.Identity.Pages.Account
             ILogger<LoginModel> logger,
             UserManager<ApplicationUser> userManager)
         {
+            ExternalLogins = new List<AuthenticationScheme>();
+            
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+
+            Input = new InputModel();
         }
 
         [BindProperty]
@@ -34,26 +40,26 @@ namespace WebUi.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
 
         [TempData]
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
 
         public class InputModel
         {
             [Required]
             [Display(Name = "Email or Username")]
-            public string EmailOrUsername { get; set; }
+            public string EmailOrUsername { get; set; } = null!;
 
             [Required]
             [DataType(DataType.Password)]
-            public string Password { get; set; }
+            public string Password { get; set; } = null!;
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string? returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
@@ -70,45 +76,52 @@ namespace WebUi.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        
-            if (ModelState.IsValid)
-            {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == Input.EmailOrUsername.ToUpper() ||
-                                                         u.NormalizedUserName == Input.EmailOrUsername.ToUpper());
-                if (user == null)
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
-                var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out");
-                    return RedirectToPage("./Lockout");
-                }
 
+            if (!ModelState.IsValid) return Page();
+            
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => 
+                    u.NormalizedEmail == Input.EmailOrUsername.ToUpper() ||
+                    u.NormalizedUserName == Input.EmailOrUsername.ToUpper());
+            if (user == null)
+            {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return Page();
             }
+            var result = await _signInManager.PasswordSignInAsync(
+                user, 
+                Input.Password, 
+                Input.RememberMe, 
+                lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User logged in");
+                return LocalRedirect(returnUrl);
+            }
+            if (result.RequiresTwoFactor)
+            {
+                return RedirectToPage("./LoginWith2fa", new
+                {
+                    ReturnUrl = returnUrl, Input.RememberMe
+                });
+            }
+            if (result.IsLockedOut)
+            {
+                _logger.LogWarning("User account locked out");
+                return RedirectToPage("./Lockout");
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return Page();
 
             // If we got this far, something failed, redisplay form
-            return Page();
         }
     }
 }

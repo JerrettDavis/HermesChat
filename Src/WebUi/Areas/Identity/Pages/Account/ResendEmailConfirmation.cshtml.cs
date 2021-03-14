@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Domain.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -12,28 +13,35 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebUi.Areas.Identity.Pages.Account
 {
+    [PublicAPI]
     [AllowAnonymous]
     public class ResendEmailConfirmationModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public ResendEmailConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public ResendEmailConfirmationModel(
+            UserManager<ApplicationUser> userManager, 
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+
+            Input = new InputModel();
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
+        [PublicAPI]
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            [Required] 
+            [EmailAddress] 
+            public string Email { get; set; } = null!;
         }
 
+        // ReSharper disable once CA1822
         public void OnGet()
         {
         }
@@ -41,9 +49,7 @@ namespace WebUi.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
@@ -58,7 +64,7 @@ namespace WebUi.Areas.Identity.Pages.Account
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
-                values: new { userId = userId, code = code },
+                values: new {userId, code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 Input.Email,

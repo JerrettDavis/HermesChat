@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Application.Common.Interfaces.Data;
 using Domain.Models;
-using IdentityServer4.EntityFramework.Interfaces;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,9 @@ using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Persistence
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext, IPersistedGrantDbContext
+    public class ApplicationDbContext : 
+        ApiAuthorizationDbContext<ApplicationUser>, 
+        IApplicationDbContext
     {
         private readonly ICurrentUserService _currentUserService;
         private readonly IDateTime _dateTime;

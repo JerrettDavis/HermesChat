@@ -1,11 +1,12 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace Application.Common.Exceptions
 {
+    [PublicAPI]
     public class NotFoundException : Exception
     {
         public NotFoundException()
-            : base()
         {
         }
 

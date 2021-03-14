@@ -48,8 +48,10 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="ClientApp\src\app\core\services\auth" />
+      <Folder Include="ClientApp\src\app\core\services\servers" />
       <Folder Include="ClientApp\src\app\modules\channels\components" />
       <Folder Include="ClientApp\src\app\modules\channels\pages" />
+      <Folder Include="ClientApp\src\app\shared" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Application\Application.csproj" />

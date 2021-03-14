@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Domain.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,30 +12,30 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebUi.Areas.Identity.Pages.Account.Manage
 {
-    public partial class EmailModel : PageModel
+    [PublicAPI]
+    public class EmailModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
         public EmailModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _emailSender = emailSender;
+
+            Input = new InputModel();
         }
 
-        public string Username { get; set; }
+        public string Username { get; set; } = null!;
 
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
 
         public bool IsEmailConfirmed { get; set; }
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -44,7 +45,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
             [Required]
             [EmailAddress]
             [Display(Name = "New email")]
-            public string NewEmail { get; set; }
+            public string NewEmail { get; set; } = null!;
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -76,9 +77,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             if (!ModelState.IsValid)
             {
@@ -95,7 +94,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmailChange",
                     pageHandler: null,
-                    values: new { userId = userId, email = Input.NewEmail, code = code },
+                    values: new {userId, email = Input.NewEmail, code },
                     protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
@@ -131,7 +130,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
-                values: new { area = "Identity", userId = userId, code = code },
+                values: new { area = "Identity", userId, code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Domain.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebUi.Areas.Identity.Pages.Account.Manage
 {
+    [PublicAPI]
     public class TwoFactorAuthenticationModel : PageModel
     {
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
@@ -35,15 +37,13 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         public bool IsMachineRemembered { get; set; }
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
         public async Task<IActionResult> OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             HasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) != null;
             Is2faEnabled = await _userManager.GetTwoFactorEnabledAsync(user);

@@ -7,10 +7,5 @@ namespace Application.Common.Interfaces
     public interface ICurrentUserService
     {
         string? UserId { get; }
-
-        Task<ApplicationUser?> GetLoadedUserAsync(
-            CancellationToken cancellationToken);
-
-        ApplicationUser? GetAttachedUserAsync();
     }
 }

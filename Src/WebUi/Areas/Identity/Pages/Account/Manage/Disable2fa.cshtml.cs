@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Domain.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebUi.Areas.Identity.Pages.Account.Manage
 {
+    [PublicAPI]
     public class Disable2faModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -22,7 +24,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         }
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
         public async Task<IActionResult> OnGet()
         {
@@ -44,17 +46,14 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
             if (!disable2faResult.Succeeded)
-            {
-                throw new InvalidOperationException($"Unexpected error occurred disabling 2FA for user with ID '{_userManager.GetUserId(User)}'.");
-            }
+                throw new InvalidOperationException(
+                    $"Unexpected error occurred disabling 2FA for user with ID '{_userManager.GetUserId(User)}'.");
 
-            _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
+            _logger.LogInformation("User with ID '{UserId}' has disabled 2fa", _userManager.GetUserId(User));
             StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
             return RedirectToPage("./TwoFactorAuthentication");
         }

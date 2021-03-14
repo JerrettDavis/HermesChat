@@ -11,6 +11,7 @@ namespace Application.Common.Behaviors
     {
         private readonly ILogger<TRequest> _logger;
 
+        // ReSharper disable once ContextualLoggerProblem
         public UnhandledExceptionBehaviour(ILogger<TRequest> logger)
         {
             _logger = logger;

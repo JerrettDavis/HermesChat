@@ -16,6 +16,12 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@env": ["environments/environment"],
+      "@shared/*": ["app/shared/*"],
+      "@core/*": ["app/core/*"],
+      "@modules/*": ["app/modules/*"]
+    }
   }
 }

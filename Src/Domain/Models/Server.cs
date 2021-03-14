@@ -1,5 +1,8 @@
-﻿namespace Domain.Models
+﻿using Domain.Common.Attributes;
+
+namespace Domain.Models
 {
+    [IsEntity]
     public class Server : AuditableEntity 
     {
         private Server(string id, string name, string ownerId)

@@ -1,14 +1,11 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using Application.Common.Interfaces.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Primitives;
 
 namespace Application.Common.Extensions
 {
     public static class DbContextExtensions
     {
-        public static bool Attached<T>(this IApplicationDbContext context, T entity) 
+        public static bool Attached<T>(this IApplicationDbContext context, T entity)
             where T : class
         {
             return context.Set<T>().Local.Any(e => Equals(e, entity));
@@ -28,7 +25,7 @@ namespace Application.Common.Extensions
             var attached = GetAttached(context, entity);
 
             if (attached != null) return attached;
-            
+
             context.Set<T>().Attach(entity);
 
             return entity;

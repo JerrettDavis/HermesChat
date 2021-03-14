@@ -1,12 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Domain.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebUi.Areas.Identity.Pages.Account.Manage
 {
+    [PublicAPI]
     public class SetPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -18,26 +20,30 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         {
             _userManager = userManager;
             _signInManager = signInManager;
+
+            Input = new InputModel();
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
+        [PublicAPI]
         public class InputModel
         {
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "New password")]
-            public string NewPassword { get; set; }
+            public string NewPassword { get; set; } = null!;
 
+            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Confirm new password")]
             [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
+            public string ConfirmPassword { get; set; } = null!;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -61,23 +67,18 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
             if (!addPasswordResult.Succeeded)
             {
                 foreach (var error in addPasswordResult.Errors)
-                {
                     ModelState.AddModelError(string.Empty, error.Description);
-                }
+                
                 return Page();
             }
 

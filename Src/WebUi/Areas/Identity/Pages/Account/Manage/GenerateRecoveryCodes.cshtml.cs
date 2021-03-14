@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebUi.Areas.Identity.Pages.Account.Manage
 {
+    [PublicAPI]
     public class GenerateRecoveryCodesModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -23,10 +25,10 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         }
 
         [TempData]
-        public string[] RecoveryCodes { get; set; }
+        public string[]? RecoveryCodes { get; set; }
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -64,7 +66,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
             RecoveryCodes = recoveryCodes.ToArray();
 
-            _logger.LogInformation("User with ID '{UserId}' has generated new 2FA recovery codes.", userId);
+            _logger.LogInformation("User with ID '{UserId}' has generated new 2FA recovery codes", userId);
             StatusMessage = "You have generated new recovery codes.";
             return RedirectToPage("./ShowRecoveryCodes");
         }

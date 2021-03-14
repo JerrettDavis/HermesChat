@@ -1,13 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Domain.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebUi.Areas.Identity.Pages.Account.Manage
 {
-    public partial class IndexModel : PageModel
+    [PublicAPI]
+    public class IndexModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -18,21 +20,24 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         {
             _userManager = userManager;
             _signInManager = signInManager;
+
+            Input = new InputModel();
         }
 
-        public string Username { get; set; }
+        public string? Username { get; set; }
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
+        [PublicAPI]
         public class InputModel
         {
             [Phone]
             [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            public string? PhoneNumber { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -52,9 +57,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             await LoadAsync(user);
             return Page();
@@ -64,9 +67,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             if (!ModelState.IsValid)
             {

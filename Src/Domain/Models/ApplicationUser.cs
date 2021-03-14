@@ -4,6 +4,6 @@ namespace Domain.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public string UserIdentifier { get; set; }
+        public string UserIdentifier { get; set; } = null!;
     }
 }

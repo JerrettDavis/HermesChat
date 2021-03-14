@@ -9,7 +9,7 @@ namespace WebUi.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((_, __) => { });
+            builder.ConfigureServices((_, _) => { });
         }
     }
 }

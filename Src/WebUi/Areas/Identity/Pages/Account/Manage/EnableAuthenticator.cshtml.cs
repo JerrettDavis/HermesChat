@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Domain.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebUi.Areas.Identity.Pages.Account.Manage
 {
+    [PublicAPI]
     public class EnableAuthenticatorModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -27,17 +29,19 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
             _logger = logger;
             _urlEncoder = urlEncoder;
+
+            Input = new InputModel();
         }
 
-        public string SharedKey { get; set; }
+        public string? SharedKey { get; set; }
 
-        public string AuthenticatorUri { get; set; }
-
-        [TempData]
-        public string[] RecoveryCodes { get; set; }
+        public string? AuthenticatorUri { get; set; }
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string[]? RecoveryCodes { get; set; }
+
+        [TempData]
+        public string? StatusMessage { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -45,19 +49,18 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+                MinimumLength = 6)]
             [DataType(DataType.Text)]
             [Display(Name = "Verification Code")]
-            public string Code { get; set; }
+            public string Code { get; set; } = null!;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             await LoadSharedKeyAndQrCodeUriAsync(user);
 
@@ -68,9 +71,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             if (!ModelState.IsValid)
             {
@@ -79,7 +80,9 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
             }
 
             // Strip spaces and hypens
-            var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+            var verificationCode = Input.Code
+                .Replace(" ", string.Empty)
+                .Replace("-", string.Empty);
 
             var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
                 user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
@@ -93,7 +96,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
 
             await _userManager.SetTwoFactorEnabledAsync(user, true);
             var userId = await _userManager.GetUserIdAsync(user);
-            _logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
+            _logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app", userId);
 
             StatusMessage = "Your authenticator app has been verified.";
 
@@ -103,10 +106,8 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
                 RecoveryCodes = recoveryCodes.ToArray();
                 return RedirectToPage("./ShowRecoveryCodes");
             }
-            else
-            {
-                return RedirectToPage("./TwoFactorAuthentication");
-            }
+
+            return RedirectToPage("./TwoFactorAuthentication");
         }
 
         private async Task LoadSharedKeyAndQrCodeUriAsync(ApplicationUser user)

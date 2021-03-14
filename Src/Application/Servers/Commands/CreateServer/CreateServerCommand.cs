@@ -2,31 +2,41 @@
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Application.Common.Interfaces.Data;
+using Application.Servers.Models;
+using AutoMapper;
 using Domain.Models;
 using MediatR;
 
 namespace Application.Servers.Commands.CreateServer
 {
-    public class CreateServerCommand : IRequest<string>
+    public class CreateServerCommand : IRequest<ServerDto>
     {
-        public string ServerName { get; set; } = null!;
+        public CreateServerCommand(string serverName)
+        {
+            ServerName = serverName;
+        }
+
+        public string ServerName { get; }
     }
 
     public class CreateServerCommandHandler : 
-        IRequestHandler<CreateServerCommand, string>
+        IRequestHandler<CreateServerCommand, ServerDto>
     {
         private readonly IApplicationDbContext _context;
-        private readonly ICurrentUserService _userService;
+        private readonly ICurrentUserEntityService _userService;
+        private readonly IMapper _mapper;
 
         public CreateServerCommandHandler(
             IApplicationDbContext context, 
-            ICurrentUserService userService)
+            ICurrentUserEntityService userService, 
+            IMapper mapper)
         {
             _context = context;
             _userService = userService;
+            _mapper = mapper;
         }
 
-        public async Task<string> Handle(
+        public async Task<ServerDto> Handle(
             CreateServerCommand request, 
             CancellationToken cancellationToken)
         {
@@ -37,7 +47,7 @@ namespace Application.Servers.Commands.CreateServer
             await _context.Servers.AddAsync(server, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return server.Id;
+            return _mapper.Map<ServerDto>(server);
         }
     }
 }

@@ -15,16 +15,21 @@ namespace WebUi.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public ConfirmEmailChangeModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public ConfirmEmailChangeModel(
+            UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
+        public async Task<IActionResult> OnGetAsync(
+            string? userId, 
+            string? email, 
+            string? code)
         {
             if (userId == null || email == null || code == null)
             {

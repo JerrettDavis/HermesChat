@@ -1,4 +1,4 @@
- #HermesChat
+# HermesChat
 
 A non-trivial realtime communication demo, modeled after other popular chat services.
 

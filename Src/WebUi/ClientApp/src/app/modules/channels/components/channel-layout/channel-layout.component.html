@@ -1,11 +1,6 @@
 <mat-drawer-container class="app-drawer-container">
   <mat-drawer mode="side" opened class="servers">
-    <div class="channel">
-      <mat-icon>person</mat-icon>
-    </div>
-    <div class="channel" (click)="openCreateServerDialog()">
-      <mat-icon color="primary">add</mat-icon>
-    </div>
+    <app-channels-sidebar></app-channels-sidebar>
   </mat-drawer>
   <mat-drawer-content>
     <mat-drawer-container class="app-drawer-container">

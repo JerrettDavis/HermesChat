@@ -1,10 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Application.Common.Interfaces;
-using Application.Common.Interfaces.Data;
-using Application.Servers.Models;
-using AutoMapper;
-using Domain.Models;
+﻿using Application.Servers.Models;
 using MediatR;
 
 namespace Application.Servers.Commands.CreateServer
@@ -17,39 +11,5 @@ namespace Application.Servers.Commands.CreateServer
         }
 
         public string ServerName { get; }
-    }
-
-    public class CreateServerCommandHandler : 
-        IRequestHandler<CreateServerCommand, ServerDto>
-    {
-        private readonly IApplicationDbContext _context;
-        private readonly ICurrentUserEntityService _userService;
-        private readonly IMapper _mapper;
-
-        public CreateServerCommandHandler(
-            IApplicationDbContext context, 
-            ICurrentUserEntityService userService, 
-            IMapper mapper)
-        {
-            _context = context;
-            _userService = userService;
-            _mapper = mapper;
-        }
-
-        public async Task<ServerDto> Handle(
-            CreateServerCommand request, 
-            CancellationToken cancellationToken)
-        {
-            var user = _userService.GetAttachedUserAsync()!;
-            var server = new Server(
-                request.ServerName, 
-                user);
-            server.AddUser(user);
-
-            await _context.Servers.AddAsync(server, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return _mapper.Map<ServerDto>(server);
-        }
     }
 }

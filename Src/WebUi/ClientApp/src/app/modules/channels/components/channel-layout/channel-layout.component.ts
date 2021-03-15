@@ -4,16 +4,12 @@ import {RouterModule} from "@angular/router";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatIconModule} from "@angular/material/icon";
 import {MatToolbarModule} from "@angular/material/toolbar";
-import {AuthorizeService, IUser} from "../../../../../api-authorization/authorize.service";
 import {MatButtonModule} from "@angular/material/button";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {Clipboard, ClipboardModule} from "@angular/cdk/clipboard";
+import {ClipboardModule} from "@angular/cdk/clipboard";
 import {UserToolbarModule} from "../user-toolbar/user-toolbar.component";
-import {MatDialog} from "@angular/material/dialog";
-import {
-  CreateServerDialogComponent,
-  CreateServerDialogModule
-} from "../../../servers/components/create-server-dialog/create-server-dialog.component";
+import {CreateServerDialogModule} from "../../../servers/components/create-server-dialog/create-server-dialog.component";
+import {ChannelsSidebarModule} from "../channels-sidebar/channels-sidebar.component";
 
 @Component({
   selector: 'app-channel-layout',
@@ -22,18 +18,10 @@ import {
 })
 export class ChannelLayoutComponent implements OnInit {
 
-  constructor(private _dialog: MatDialog) {
+  constructor() {
   }
 
   ngOnInit(): void {
-
-  }
-
-  openCreateServerDialog(): void {
-    const dialogRef = this._dialog.open(CreateServerDialogComponent,
-      {
-        width: '50%'
-      });
   }
 }
 
@@ -52,7 +40,8 @@ export class ChannelLayoutComponent implements OnInit {
     ClipboardModule,
     UserToolbarModule,
 
-    CreateServerDialogModule
+    CreateServerDialogModule,
+    ChannelsSidebarModule
   ],
   declarations: [ChannelLayoutComponent]
 })

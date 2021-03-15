@@ -1,6 +1,7 @@
 using System.Linq;
 using Application.Common.Extensions;
 using Application.Common.Interfaces;
+using Application.Servers.Hubs;
 using FluentValidation.AspNetCore;
 using Infrastructure.Common.Extensions;
 using Infrastructure.Persistence;
@@ -113,11 +114,10 @@ namespace WebUi
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
                 endpoints.MapHub<ChatHub>("/hubs/chat");
+                endpoints.MapHub<ServerHub>("/hubs/server");
             });
 
             app.UseSpa(spa =>

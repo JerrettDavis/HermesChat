@@ -40,9 +40,11 @@ namespace Application.Servers.Commands.CreateServer
             CreateServerCommand request, 
             CancellationToken cancellationToken)
         {
+            var user = _userService.GetAttachedUserAsync()!;
             var server = new Server(
                 request.ServerName, 
-                _userService.GetAttachedUserAsync()!);
+                user);
+            server.AddUser(user);
 
             await _context.Servers.AddAsync(server, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);

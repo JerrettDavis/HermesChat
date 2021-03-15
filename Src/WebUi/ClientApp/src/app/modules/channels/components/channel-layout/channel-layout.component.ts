@@ -9,6 +9,11 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {Clipboard, ClipboardModule} from "@angular/cdk/clipboard";
 import {UserToolbarModule} from "../user-toolbar/user-toolbar.component";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  CreateServerDialogComponent,
+  CreateServerDialogModule
+} from "../../../servers/components/create-server-dialog/create-server-dialog.component";
 
 @Component({
   selector: 'app-channel-layout',
@@ -16,37 +21,19 @@ import {UserToolbarModule} from "../user-toolbar/user-toolbar.component";
   styleUrls: ['./channel-layout.component.scss']
 })
 export class ChannelLayoutComponent implements OnInit {
-  user: IUser;
 
-  private _usernameHasBeenCopied: boolean;
-
-
-  get copyUsernameMessage(): string {
-    return !this._usernameHasBeenCopied ?
-      'Click to copy username.' :
-      'Username Copied!'
-  }
-
-  get tooltipClass(): string {
-    return this._usernameHasBeenCopied ?
-      'tooltip-success' :
-      '';
-  }
-
-  constructor(private _authService: AuthorizeService,
-              private _clipboard: Clipboard) {
+  constructor(private _dialog: MatDialog) {
   }
 
   ngOnInit(): void {
-    this._authService.getUser()
-      .subscribe(u => {
-        this.user = u
-      });
+
   }
 
-  copyUsername(): void {
-    this._usernameHasBeenCopied = true;
-    this._clipboard.copy(this.user.name + '#' + this.user.userIdentifier);
+  openCreateServerDialog(): void {
+    const dialogRef = this._dialog.open(CreateServerDialogComponent,
+      {
+        width: '50%'
+      });
   }
 }
 
@@ -63,7 +50,9 @@ export class ChannelLayoutComponent implements OnInit {
     MatButtonModule,
     MatTooltipModule,
     ClipboardModule,
-    UserToolbarModule
+    UserToolbarModule,
+
+    CreateServerDialogModule
   ],
   declarations: [ChannelLayoutComponent]
 })

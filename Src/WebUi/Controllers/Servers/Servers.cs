@@ -28,7 +28,10 @@ namespace WebUi.Controllers.Servers
                 cancellationToken);
             var response = new CreateServerResponse(server);
 
-            return CreatedAtAction(nameof(GetServer), response);
+            return CreatedAtAction(
+                actionName: nameof(GetServer), 
+                routeValues: new {serverId = server.Id}, 
+                value: response);
         }  
     }
 }

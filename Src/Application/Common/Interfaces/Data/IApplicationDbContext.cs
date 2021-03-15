@@ -9,6 +9,7 @@ namespace Application.Common.Interfaces.Data
     {
         DbSet<ApplicationUser> Users { get; set; }
         DbSet<Server> Servers { get; set; }
+        DbSet<ServerUser> ServerUsers { get; set; }
 
         DbSet<TEntity> Set<TEntity>()
             where TEntity : class;

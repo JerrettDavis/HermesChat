@@ -21,8 +21,9 @@ namespace Infrastructure.Persistence
         
         private IDbContextTransaction? _currentTransaction;
         
-        public virtual DbSet<Server> Servers { get; set; } = null!;
-        
+        public virtual DbSet<Server>     Servers     { get; set; } = null!;
+        public virtual DbSet<ServerUser> ServerUsers { get; set; } = null!;
+
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions,

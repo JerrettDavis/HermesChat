@@ -53,7 +53,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy{
   }
 
   async ngOnDestroy(): Promise<void> {
-    await this._connection.stop();
+    await this._connection?.stop();
     this._logger.info('Disconnected from chat hub.');
   }
 

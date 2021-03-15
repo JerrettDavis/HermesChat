@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import {HubConnection} from "@microsoft/signalr";
-import {Observable} from "rxjs";
+import {Injectable} from '@angular/core';
+import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {AuthorizeService} from "../../../api-authorization/authorize.service";
 
 @Injectable({
@@ -8,10 +7,14 @@ import {AuthorizeService} from "../../../api-authorization/authorize.service";
 })
 export class HubBuilderService {
 
-  constructor(private _authorizeService: AuthorizeService) { }
+  constructor(private _authorizeService: AuthorizeService) {
+  }
 
-  // build(url: string): Observable<HubConnection> {
-  //   this._authorizeService.getAccessToken()
-  //     .subscribe(async)
-  // }
+  async build(url: string): Promise<HubConnection> {
+    const accessToken = this._authorizeService.getAccessToken().toPromise();
+    return new HubConnectionBuilder()
+      .withUrl(url, {accessTokenFactory: () => accessToken})
+      .withAutomaticReconnect()
+      .build();
+  }
 }

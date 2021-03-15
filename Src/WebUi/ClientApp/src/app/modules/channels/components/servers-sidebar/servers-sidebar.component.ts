@@ -2,18 +2,22 @@ import {Component, NgModule, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {CreateServerDialogComponent} from "../../../servers/components/create-server-dialog/create-server-dialog.component";
 import {MatIconModule} from "@angular/material/icon";
+import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 
 @Component({
   selector: 'app-channels-sidebar',
-  templateUrl: './channels-sidebar.component.html',
-  styleUrls: ['./channels-sidebar.component.scss']
+  templateUrl: './servers-sidebar.component.html',
+  styleUrls: ['./servers-sidebar.component.scss']
 })
-export class ChannelsSidebarComponent implements OnInit {
+export class ServersSidebarComponent implements OnInit {
+  private _connection: HubConnection;
 
   constructor(private _dialog: MatDialog) {
   }
 
   ngOnInit(): void {
+    // this._connection = new HubConnectionBuilder()
+    //   .withUrl('/hubs/server', )
   }
 
   openCreateServerDialog(): void {
@@ -26,11 +30,11 @@ export class ChannelsSidebarComponent implements OnInit {
 
 @NgModule({
   exports: [
-    ChannelsSidebarComponent
+    ServersSidebarComponent
   ],
   imports: [
     MatIconModule
   ],
-  declarations: [ChannelsSidebarComponent]
+  declarations: [ServersSidebarComponent]
 })
-export class ChannelsSidebarModule {}
+export class ServersSidebarModule {}

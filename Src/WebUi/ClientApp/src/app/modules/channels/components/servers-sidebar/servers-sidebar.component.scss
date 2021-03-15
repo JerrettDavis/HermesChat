@@ -1,0 +1,21 @@
+.server {
+  border-radius: 32px;
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px;
+  transition: all 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    * {
+      color: #fff !important;
+    }
+    color: #fff;
+    background-color: #00BCD4;
+    border-radius: 8px;
+  }
+}

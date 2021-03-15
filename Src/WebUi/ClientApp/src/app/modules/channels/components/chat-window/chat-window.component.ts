@@ -29,6 +29,8 @@ export class ChatWindowComponent implements OnInit, OnDestroy{
   }
 
   public async ngOnInit(): Promise<void> {
+    await this._authorizeService.getAccessToken().toPromise();
+    console.log('WE MADE IT!');
     this._authorizeService.getAccessToken()
       .subscribe(async t => {
         this._connection = new HubConnectionBuilder()

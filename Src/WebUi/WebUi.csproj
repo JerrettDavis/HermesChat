@@ -41,6 +41,7 @@
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="ClientApp\src\app\core\hubs" />
       <Folder Include="ClientApp\src\app\core\services\auth" />
       <Folder Include="ClientApp\src\app\core\services\servers" />
       <Folder Include="ClientApp\src\app\modules\channels\components" />

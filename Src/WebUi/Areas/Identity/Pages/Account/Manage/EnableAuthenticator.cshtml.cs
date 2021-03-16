@@ -1,3 +1,19 @@
+// HermesChat - Simple real-time chat application.
+// Copyright (C) 2021  Jerrett D. Davis
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -15,11 +31,10 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
     [PublicAPI]
     public class EnableAuthenticatorModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private readonly ILogger<EnableAuthenticatorModel> _logger;
         private readonly UrlEncoder _urlEncoder;
-
-        private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public EnableAuthenticatorModel(
             UserManager<ApplicationUser> userManager,
@@ -37,24 +52,11 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
 
         public string? AuthenticatorUri { get; set; }
 
-        [TempData]
-        public string[]? RecoveryCodes { get; set; }
+        [TempData] public string[]? RecoveryCodes { get; set; }
 
-        [TempData]
-        public string? StatusMessage { get; set; }
+        [TempData] public string? StatusMessage { get; set; }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
-                MinimumLength = 6)]
-            [DataType(DataType.Text)]
-            [Display(Name = "Verification Code")]
-            public string Code { get; set; } = null!;
-        }
+        [BindProperty] public InputModel Input { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -129,16 +131,14 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         private string FormatKey(string unformattedKey)
         {
             var result = new StringBuilder();
-            int currentPosition = 0;
+            var currentPosition = 0;
             while (currentPosition + 4 < unformattedKey.Length)
             {
                 result.Append(unformattedKey.Substring(currentPosition, 4)).Append(" ");
                 currentPosition += 4;
             }
-            if (currentPosition < unformattedKey.Length)
-            {
-                result.Append(unformattedKey.Substring(currentPosition));
-            }
+
+            if (currentPosition < unformattedKey.Length) result.Append(unformattedKey.Substring(currentPosition));
 
             return result.ToString().ToLowerInvariant();
         }
@@ -150,6 +150,16 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
                 _urlEncoder.Encode("HermesChat"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+                MinimumLength = 6)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Verification Code")]
+            public string Code { get; set; } = null!;
         }
     }
 }

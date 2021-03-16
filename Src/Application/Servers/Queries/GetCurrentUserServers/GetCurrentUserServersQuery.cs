@@ -1,4 +1,4 @@
-// HermesChat - Simple real-time chat application.
+﻿// HermesChat - Simple real-time chat application.
 // Copyright (C) 2021  Jerrett D. Davis
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -14,25 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using Application.Servers.Models;
+using MediatR;
 
-namespace WebUi.Areas.Identity.Pages.Account.Manage
+namespace Application.Servers.Queries.GetCurrentUserServers
 {
-    [PublicAPI]
-    public class ShowRecoveryCodesModel : PageModel
+    public class GetCurrentUserServersQuery : IRequest<IEnumerable<ServerDto>>
     {
-        [TempData] public string[]? RecoveryCodes { get; set; }
-
-        [TempData] public string? StatusMessage { get; set; }
-
-        public IActionResult OnGet()
-        {
-            if (RecoveryCodes == null || RecoveryCodes.Length == 0)
-                return RedirectToPage("./TwoFactorAuthentication");
-
-            return Page();
-        }
+        
     }
 }

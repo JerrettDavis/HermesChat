@@ -1,3 +1,19 @@
+// HermesChat - Simple real-time chat application.
+// Copyright (C) 2021  Jerrett D. Davis
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 using System.Linq;
 using Application.Common.Extensions;
 using Application.Common.Interfaces;
@@ -41,28 +57,25 @@ namespace WebUi
                 .AddHttpContextAccessor()
                 .AddDatabaseDeveloperPageExceptionFilter()
                 .AddSignalR();
-            
+
             services.AddHealthChecks()
                 .AddDbContextCheck<ApplicationDbContext>();
-            
-            services.AddControllersWithViews(options => 
-                options.Filters.Add<ApiExceptionFilterAttribute>())
+
+            services.AddControllersWithViews(options =>
+                    options.Filters.Add<ApiExceptionFilterAttribute>())
                 .AddFluentValidation();
-            
+
             services.AddControllersWithViews();
-            
+
             services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
-            
+
             // Customise default API behaviour
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
+            services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
-            
+
             services.AddOpenApiDocument(configure =>
             {
                 configure.Title = "HermesChat API";
@@ -96,11 +109,8 @@ namespace WebUi
             app.UseHealthChecks("/health");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
-            
+            if (!env.IsDevelopment()) app.UseSpaStaticFiles();
+
             app.UseSwaggerUi3(settings =>
             {
                 settings.Path = "/api";
@@ -114,7 +124,7 @@ namespace WebUi
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
                 endpoints.MapHub<ChatHub>("/hubs/chat");
                 endpoints.MapHub<ServerHub>("/hubs/server");
@@ -127,10 +137,7 @@ namespace WebUi
 
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
+                if (env.IsDevelopment()) spa.UseAngularCliServer("start");
             });
         }
     }

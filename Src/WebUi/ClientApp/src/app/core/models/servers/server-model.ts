@@ -1,5 +1,5 @@
 ﻿export interface Server {
-  serverName: string;
+  name: string;
   created: Date;
   lastModified?: Date | undefined | null;
 }

@@ -1,3 +1,19 @@
+// HermesChat - Simple real-time chat application.
+// Copyright (C) 2021  Jerrett D. Davis
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -15,8 +31,8 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
     [PublicAPI]
     public class EmailModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public EmailModel(
             UserManager<ApplicationUser> userManager,
@@ -34,19 +50,9 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
 
         public bool IsEmailConfirmed { get; set; }
 
-        [TempData]
-        public string? StatusMessage { get; set; }
+        [TempData] public string? StatusMessage { get; set; }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "New email")]
-            public string NewEmail { get; set; } = null!;
-        }
+        [BindProperty] public InputModel Input { get; set; }
 
         private async Task LoadAsync(ApplicationUser user)
         {
@@ -55,7 +61,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                NewEmail = email,
+                NewEmail = email
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -64,10 +70,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             await LoadAsync(user);
             return Page();
@@ -93,9 +96,9 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmailChange",
-                    pageHandler: null,
-                    values: new {userId, email = Input.NewEmail, code },
-                    protocol: Request.Scheme);
+                    null,
+                    new {userId, email = Input.NewEmail, code},
+                    Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
                     "Confirm your email",
@@ -112,10 +115,7 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             if (!ModelState.IsValid)
             {
@@ -129,9 +129,9 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { area = "Identity", userId, code },
-                protocol: Request.Scheme);
+                null,
+                new {area = "Identity", userId, code},
+                Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
                 "Confirm your email",
@@ -139,6 +139,14 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [EmailAddress]
+            [Display(Name = "New email")]
+            public string NewEmail { get; set; } = null!;
         }
     }
 }

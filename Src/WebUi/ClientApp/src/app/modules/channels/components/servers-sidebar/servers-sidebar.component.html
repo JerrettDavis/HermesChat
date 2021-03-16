@@ -1,6 +1,13 @@
 <div class="server">
   <mat-icon>person</mat-icon>
 </div>
+<div class="server"
+     *ngFor="let server of servers"
+     [matTooltip]="server.name"
+     matTooltipPosition="right"
+>
+  <mat-icon>person</mat-icon>
+</div>
 <div class="server" (click)="openCreateServerDialog()">
   <mat-icon color="primary">add</mat-icon>
 </div>

@@ -2,9 +2,13 @@ import {Component, NgModule, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {CreateServerDialogComponent} from "../../../servers/components/create-server-dialog/create-server-dialog.component";
 import {MatIconModule} from "@angular/material/icon";
-import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
+import {HubConnection} from "@microsoft/signalr";
 import {HubBuilderService} from "../../../../core/hubs/hub-builder.service";
 import {NGXLogger} from "ngx-logger";
+import {Server} from "../../../../core/models/servers/server-model";
+import {ServersService} from "../../../../core/services/servers/servers.service";
+import {CommonModule} from "@angular/common";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-channels-sidebar',
@@ -13,10 +17,12 @@ import {NGXLogger} from "ngx-logger";
 })
 export class ServersSidebarComponent implements OnInit {
   private _connection: HubConnection;
+  public servers: Server[];
 
   constructor(private _dialog: MatDialog,
               private _hubBuilder: HubBuilderService,
-              private _logger: NGXLogger) {
+              private _logger: NGXLogger,
+              private _serversService: ServersService) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -28,6 +34,9 @@ export class ServersSidebarComponent implements OnInit {
     this._connection.on('JoinedServer', (n) => {
       this._logger.info('Joined Server!', n);
     });
+
+    this._serversService.getServers()
+      .subscribe(s => this.servers = s);
   }
 
   openCreateServerDialog(): void {
@@ -43,8 +52,11 @@ export class ServersSidebarComponent implements OnInit {
     ServersSidebarComponent
   ],
   imports: [
-    MatIconModule
+    MatIconModule,
+    CommonModule,
+    MatTooltipModule
   ],
   declarations: [ServersSidebarComponent]
 })
-export class ServersSidebarModule {}
+export class ServersSidebarModule {
+}

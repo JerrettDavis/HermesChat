@@ -10,22 +10,22 @@
     <div class="col-md-12">
         <section>
             <form id="account" method="post">
-                <hr />
+                <hr/>
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Input.EmailOrUsername"></label>
-                    <input asp-for="Input.EmailOrUsername" class="form-control" />
+                    <input asp-for="Input.EmailOrUsername" class="form-control"/>
                     <span asp-validation-for="Input.EmailOrUsername" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control" />
+                    <input asp-for="Input.Password" class="form-control"/>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <div class="checkbox">
                         <label asp-for="Input.RememberMe">
-                            <input asp-for="Input.RememberMe" />
+                            <input asp-for="Input.RememberMe"/>
                             @Html.DisplayNameFor(m => m.Input.RememberMe)
                         </label>
                     </div>
@@ -50,5 +50,5 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

@@ -1,4 +1,20 @@
-﻿using System;
+﻿// HermesChat - Simple real-time chat application.
+// Copyright (C) 2021  Jerrett D. Davis
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+using System;
 using System.Collections.Generic;
 using Application.Common.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -7,9 +23,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace WebUi.Common.Filters
 {
-public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
+    public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
-
         private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
 
         public ApiExceptionFilterAttribute()
@@ -17,10 +32,10 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             // Register known exception types and handlers.
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
-                { typeof(ValidationException), HandleValidationException },
-                { typeof(NotFoundException), HandleNotFoundException },
-                { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
-                { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
+                {typeof(ValidationException), HandleValidationException},
+                {typeof(NotFoundException), HandleNotFoundException},
+                {typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException},
+                {typeof(ForbiddenAccessException), HandleForbiddenAccessException}
             };
         }
 
@@ -79,7 +94,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         {
             var exception = context.Exception as NotFoundException;
 
-            var details = new ProblemDetails()
+            var details = new ProblemDetails
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                 Title = "The specified resource was not found.",

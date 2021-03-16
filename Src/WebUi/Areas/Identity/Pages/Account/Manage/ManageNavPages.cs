@@ -1,4 +1,21 @@
+// HermesChat - Simple real-time chat application.
+// Copyright (C) 2021  Jerrett D. Davis
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 using System;
+using System.IO;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -23,29 +40,51 @@ namespace WebUi.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
-        public static string? IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
+        public static string? IndexNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, Index);
+        }
 
-        public static string? EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
+        public static string? EmailNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, Email);
+        }
 
-        public static string? ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
+        public static string? ChangePasswordNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, ChangePassword);
+        }
 
-        public static string? DownloadPersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, DownloadPersonalData);
+        public static string? DownloadPersonalDataNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, DownloadPersonalData);
+        }
 
-        public static string? DeletePersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, DeletePersonalData);
+        public static string? DeletePersonalDataNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, DeletePersonalData);
+        }
 
-        public static string? ExternalLoginsNavClass(ViewContext viewContext) => PageNavClass(viewContext, ExternalLogins);
+        public static string? ExternalLoginsNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, ExternalLogins);
+        }
 
-        public static string? PersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalData);
+        public static string? PersonalDataNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, PersonalData);
+        }
 
-        public static string? TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+        public static string? TwoFactorAuthenticationNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, TwoFactorAuthentication);
+        }
 
         private static string? PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string
-                ?? System.IO.Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
-            return string.Equals(activePage, page, StringComparison.OrdinalIgnoreCase) ? 
-                "active" : 
-                null;
+                             ?? Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
+            return string.Equals(activePage, page, StringComparison.OrdinalIgnoreCase) ? "active" : null;
         }
     }
 }

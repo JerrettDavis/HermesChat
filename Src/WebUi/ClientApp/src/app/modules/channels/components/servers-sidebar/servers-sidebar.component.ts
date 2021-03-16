@@ -9,6 +9,7 @@ import {Server} from "../../../../core/models/servers/server-model";
 import {ServersService} from "../../../../core/services/servers/servers.service";
 import {CommonModule} from "@angular/common";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {JoinedServerResponse} from "../../../../core/models/hubs/responses/joined-server-response.model";
 
 @Component({
   selector: 'app-channels-sidebar',
@@ -31,16 +32,24 @@ export class ServersSidebarComponent implements OnInit {
     await this._connection.start();
     this._logger.info('Connecting to the server hub.');
 
-    this._connection.on('JoinedServer', (n) => {
+    this._connection.on('JoinedServer', (n: JoinedServerResponse) => {
       this._logger.info('Joined Server!', n);
+      this.getServer(n.serverId);
     });
 
     this._serversService.getServers()
       .subscribe(s => this.servers = s);
   }
 
+  getServer(id: string): void {
+    this._serversService.getServer(id)
+      .subscribe(s => {
+        this.servers.unshift(s);
+      });
+  }
+
   openCreateServerDialog(): void {
-    const dialogRef = this._dialog.open(CreateServerDialogComponent,
+    this._dialog.open(CreateServerDialogComponent,
       {
         width: '50%'
       });

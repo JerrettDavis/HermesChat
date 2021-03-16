@@ -16,6 +16,7 @@
 
 using System.Reflection;
 using Application.Common.Behaviors;
+using Application.Servers.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,8 @@ namespace Application.Common.Extensions
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
+
+            services.AddTransient<IServerValidators, ServerValidators>();
 
             return services;
         }

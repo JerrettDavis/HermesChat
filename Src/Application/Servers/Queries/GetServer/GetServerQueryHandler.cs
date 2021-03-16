@@ -14,47 +14,40 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Interfaces;
 using Application.Common.Interfaces.Data;
-using Application.Common.Mapping;
 using Application.Servers.Models;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using JetBrains.Annotations;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
-namespace Application.Servers.Queries.GetCurrentUserServers
+namespace Application.Servers.Queries.GetServer
 {
     [UsedImplicitly]
-    public class GetCurrentUserServersQueryHandler :
-        IRequestHandler<GetCurrentUserServersQuery, IEnumerable<ServerDto>>
+    public class GetServerQueryHandler : 
+        IRequestHandler<GetServerQuery, ServerDto>
     {
         private readonly IApplicationDbContext _context;
-        private readonly ICurrentUserEntityService _entityService;
         private readonly IMapper _mapper;
 
-        public GetCurrentUserServersQueryHandler(
-            IApplicationDbContext context,
-            ICurrentUserEntityService entityService,
+        public GetServerQueryHandler(
+            IApplicationDbContext context, 
             IMapper mapper)
         {
             _context = context;
-            _entityService = entityService;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ServerDto>> Handle(
-            GetCurrentUserServersQuery request,
+        public Task<ServerDto> Handle(
+            GetServerQuery request, 
             CancellationToken cancellationToken)
         {
-            var user = _entityService.GetAttachedUser();
-            return await _context.Users
-                .Where(u => Equals(u, user))
-                .SelectMany(u => u.ServerUsers.Select(su => su.Server))
-                .ProjectToListAsync<ServerDto>(_mapper.ConfigurationProvider);
+            return _context.Servers
+                .ProjectTo<ServerDto>(_mapper.ConfigurationProvider)
+                .SingleAsync(s => s.Id == request.ServerId, cancellationToken);
         }
     }
 }

@@ -18,13 +18,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Servers.Commands.CreateServer;
 using Application.Servers.Queries.GetCurrentUserServers;
+using Application.Servers.Queries.GetServer;
 using Microsoft.AspNetCore.Mvc;
 using WebUi.Models.Requests.Servers;
 using WebUi.Models.Responses.Servers;
 
 namespace WebUi.Controllers.Servers
 {
-    public class Servers : ApiControllerBase
+    public class ServersController : ApiControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetServers(
@@ -35,13 +36,16 @@ namespace WebUi.Controllers.Servers
             return Ok(new GetUserServersResponse(response));
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("{serverId}")]
         public async Task<IActionResult> GetServer(
             string serverId,
             CancellationToken cancellationToken)
         {
-            await Task.CompletedTask;
-            return Ok();
+            var response = await Mediator.Send(
+                new GetServerQuery(serverId),
+                cancellationToken);
+            return Ok(new GetServerResponse(response));
+            
         }
 
         [HttpPost]

@@ -1,5 +1,5 @@
 import {Component, NgModule, OnInit} from '@angular/core';
-import {MatDialogModule} from "@angular/material/dialog";
+import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -19,7 +19,8 @@ export class CreateServerDialogComponent implements OnInit {
 
   constructor(private _formBuilder: FormBuilder,
               private _serversService: ServersService,
-              private _logger: NGXLogger) { }
+              private _logger: NGXLogger,
+              private _dialogRef: MatDialogRef<CreateServerDialogComponent>) { }
 
   ngOnInit(): void {
     this.formGroup = this._formBuilder.group({
@@ -34,6 +35,7 @@ export class CreateServerDialogComponent implements OnInit {
       .subscribe(s => {
         this._logger.info('Server Created!', s);
         this._saving = false;
+        this._dialogRef.close();
       });
   }
 

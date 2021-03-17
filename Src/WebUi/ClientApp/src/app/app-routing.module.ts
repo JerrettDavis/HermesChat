@@ -8,7 +8,7 @@ const routes: Route[] = [
   },
   {
     path: 'channels',
-    loadChildren: () => import('./modules/channels/channels.module').then(m => m.ChannelsModule)
+    loadChildren: () => import('./modules/servers/channels/channels.module').then(m => m.ChannelsModule)
   }
 ]
 

@@ -1,15 +1,15 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
-import {CreateServerDialogComponent} from "../../../servers/components/create-server-dialog/create-server-dialog.component";
 import {MatIconModule} from "@angular/material/icon";
 import {HubConnection} from "@microsoft/signalr";
-import {HubBuilderService} from "../../../../core/hubs/hub-builder.service";
 import {NGXLogger} from "ngx-logger";
-import {Server} from "../../../../core/models/servers/server-model";
-import {ServersService} from "../../../../core/services/servers/servers.service";
 import {CommonModule} from "@angular/common";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {JoinedServerResponse} from "../../../../core/models/hubs/responses/joined-server-response.model";
+import {Server} from "@core/models/servers/server-model";
+import {HubBuilderService} from "@core/hubs/hub-builder.service";
+import {ServersService} from "@core/services/servers/servers.service";
+import {JoinedServerResponse} from "@core/models/hubs/responses/joined-server-response.model";
+import {CreateServerDialogComponent} from "../../../components/create-server-dialog/create-server-dialog.component";
 
 @Component({
   selector: 'app-channels-sidebar',

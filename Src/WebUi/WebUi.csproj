@@ -46,8 +46,6 @@
       <Folder Include="ClientApp\src\app\core\models\hubs\requests" />
       <Folder Include="ClientApp\src\app\core\services\auth" />
       <Folder Include="ClientApp\src\app\core\services\servers" />
-      <Folder Include="ClientApp\src\app\modules\channels\components" />
-      <Folder Include="ClientApp\src\app\modules\channels\pages" />
       <Folder Include="ClientApp\src\app\modules\servers\components" />
       <Folder Include="ClientApp\src\app\shared" />
     </ItemGroup>

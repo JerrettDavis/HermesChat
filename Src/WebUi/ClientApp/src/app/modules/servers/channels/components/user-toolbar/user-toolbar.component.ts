@@ -1,10 +1,10 @@
 import {Component, NgModule, OnInit} from '@angular/core';
-import {AuthorizeService, IUser} from "../../../../../api-authorization/authorize.service";
 import {Clipboard} from "@angular/cdk/clipboard";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatButtonModule} from "@angular/material/button";
+import {AuthorizeService, IUser} from "@auth/authorize.service";
 
 @Component({
   selector: 'app-user-toolbar',

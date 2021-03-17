@@ -16,21 +16,24 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using Domain.Models;
-using Microsoft.EntityFrameworkCore;
+using Application.Servers.Channels.Queries.GetChannels;
+using Microsoft.AspNetCore.Mvc;
+using WebUi.Models.Responses.Servers;
 
-namespace Application.Common.Interfaces.Data
+namespace WebUi.Controllers.Servers
 {
-    public interface IApplicationDbContext
+    [Route("Api/Servers/{serverId}/[controller]")]
+    public class ChannelsController : ApiControllerBase
     {
-        DbSet<ApplicationUser> Users { get; set; }
-        DbSet<Channel> Channels { get; set; }
-        DbSet<Server> Servers { get; set; }
-        DbSet<ServerUser> ServerUsers { get; set; }
+        [HttpGet]
+        public async Task<IActionResult> GetChannels(
+            string serverId,
+            CancellationToken cancellationToken)
+        {
+            var channels = await Mediator.Send(
+                new GetChannelsQuery(serverId), cancellationToken);
 
-        DbSet<TEntity> Set<TEntity>()
-            where TEntity : class;
-
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = new());
+            return Ok(new GetChannelsResponse(channels));
+        } 
     }
 }

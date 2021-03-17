@@ -1,11 +1,11 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
-import {AuthorizeService} from "../../../../../api-authorization/authorize.service";
+import {AuthorizeService} from "@auth/authorize.service";
 import {Router, RouterModule} from "@angular/router";
 import {NGXLogger} from "ngx-logger";
-import {ApplicationPaths} from "../../../../../api-authorization/api-authorization.constants";
-import {fadeInAnimation} from "../../../../core/animations/fade-in.animation";
+import {ApplicationPaths} from "@auth/api-authorization.constants";
+import {fadeInAnimation} from "@core/animations/fade-in.animation";
 
 @Component({
   selector: 'app-home',

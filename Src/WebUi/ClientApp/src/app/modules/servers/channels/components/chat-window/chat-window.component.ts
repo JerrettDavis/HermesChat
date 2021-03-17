@@ -2,27 +2,28 @@ import {ChangeDetectorRef, Component, ElementRef, NgModule, OnDestroy, OnInit, V
 import {MatCardModule} from "@angular/material/card";
 import {MatDividerModule} from "@angular/material/divider";
 import {CommonModule} from "@angular/common";
-import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
+import {HubConnection} from "@microsoft/signalr";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NGXLogger} from "ngx-logger";
-import {AuthorizeService} from "../../../../../api-authorization/authorize.service";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {HubBuilderService} from "../../../../core/hubs/hub-builder.service";
+import {HubBuilderService} from "@core/hubs/hub-builder.service";
+import {AuthorizeService} from "@auth/authorize.service";
 
 @Component({
   selector: 'app-chat-window',
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.scss']
 })
-export class ChatWindowComponent implements OnInit, OnDestroy{
+export class ChatWindowComponent implements OnInit, OnDestroy {
   @ViewChild('messagesOuterContainer') private _messagesOuterContainer: ElementRef;
 
   private _connection: HubConnection;
   messages: Message[] = [];
   form: FormGroup;
+
   constructor(private _logger: NGXLogger,
               private _formBuilder: FormBuilder,
               private _authorizeService: AuthorizeService,
@@ -93,4 +94,5 @@ interface Message {
   ],
   declarations: [ChatWindowComponent]
 })
-export class ChatWindowModule {}
+export class ChatWindowModule {
+}

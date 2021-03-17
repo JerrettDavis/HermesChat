@@ -14,23 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System.Threading;
-using System.Threading.Tasks;
 using Domain.Models;
+using Infrastructure.Common.Genetators;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Application.Common.Interfaces.Data
+namespace Infrastructure.Persistence.Configurations
 {
-    public interface IApplicationDbContext
+    public class ChannelConfiguration : IEntityTypeConfiguration<Channel>
     {
-        DbSet<ApplicationUser> Users { get; set; }
-        DbSet<Channel> Channels { get; set; }
-        DbSet<Server> Servers { get; set; }
-        DbSet<ServerUser> ServerUsers { get; set; }
-
-        DbSet<TEntity> Set<TEntity>()
-            where TEntity : class;
-
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = new());
+        public void Configure(EntityTypeBuilder<Channel> builder)
+        {
+            builder.HasKey(e => e.Id);
+            builder.Property(e => e.Id)
+                .IsRequired()
+                .ValueGeneratedOnAdd()
+                .HasValueGenerator<IdValueGenerator>();
+            builder.Property(e => e.Name)
+                .HasMaxLength(128);
+            builder.Property(e => e.Topic)
+                .HasMaxLength(1024);
+        }
     }
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
-import {AuthorizeService} from "../../../api-authorization/authorize.service";
+import {AuthorizeService} from "@auth/authorize.service";
 
 @Injectable({
   providedIn: 'root'

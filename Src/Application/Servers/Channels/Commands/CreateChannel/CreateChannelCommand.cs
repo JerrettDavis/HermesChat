@@ -14,23 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System.Threading;
-using System.Threading.Tasks;
-using Domain.Models;
-using Microsoft.EntityFrameworkCore;
+using Application.Servers.Channels.Models;
+using Application.Servers.Channels.Models.Input;
+using JetBrains.Annotations;
+using MediatR;
 
-namespace Application.Common.Interfaces.Data
+namespace Application.Servers.Channels.Commands.CreateChannel
 {
-    public interface IApplicationDbContext
+    [PublicAPI]
+    public class CreateChannelCommand : IRequest<ChannelDto>
     {
-        DbSet<ApplicationUser> Users { get; set; }
-        DbSet<Channel> Channels { get; set; }
-        DbSet<Server> Servers { get; set; }
-        DbSet<ServerUser> ServerUsers { get; set; }
+        public CreateChannelCommand(string serverId, ChannelInputModel input)
+        {
+            ServerId = serverId;
+            Input = input;
+        }
 
-        DbSet<TEntity> Set<TEntity>()
-            where TEntity : class;
-
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = new());
+        public string ServerId { get; }
+        public ChannelInputModel Input { get; }
     }
 }

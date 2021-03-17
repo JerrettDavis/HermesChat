@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {Route, RouterModule} from "@angular/router";
-import {AuthorizeGuard} from "../../../api-authorization/authorize.guard";
 import {ChannelsHomePageModule, HomeComponent} from "./pages/home/home.component";
 import {ChannelLayoutComponent, ChannelLayoutModule} from "./components/channel-layout/channel-layout.component";
+import {AuthorizeGuard} from "@auth/authorize.guard";
 
 const routes: Route[] = [
   {

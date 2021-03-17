@@ -26,6 +26,7 @@ namespace Domain.Models
     {
         private Server(string id, string name, string ownerId)
         {
+            Channels = new HashSet<Channel>();
             ServerUsers = new HashSet<ServerUser>();
 
             Id = id;
@@ -46,11 +47,17 @@ namespace Domain.Models
 
         public ApplicationUser Owner { get; set; } = null!;
 
+        public ICollection<Channel> Channels { get; }
         public ICollection<ServerUser> ServerUsers { get; }
 
         public void AddUser(ApplicationUser user)
         {
             ServerUsers.Add(new ServerUser(this, user));
+        }
+
+        public void AddChannel(Channel channel)
+        {
+            Channels.Add(channel);
         }
 
         protected bool Equals(Server other)

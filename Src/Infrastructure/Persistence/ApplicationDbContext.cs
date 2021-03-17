@@ -48,6 +48,7 @@ namespace Infrastructure.Persistence
             _dateTime = dateTime;
         }
 
+        public virtual DbSet<Channel> Channels { get; set; } = null!;
         public virtual DbSet<Server> Servers { get; set; } = null!;
         public virtual DbSet<ServerUser> ServerUsers { get; set; } = null!;
 

@@ -6,6 +6,8 @@ import {CreateServerRequest} from "../../models/servers/requests/create-server-r
 import {map} from "rxjs/operators";
 import {GetUserServersResponse} from "../../models/servers/responses/get-user-servers-response.model";
 import {GetServerResponse} from "../../models/servers/responses/get-server-response.model";
+import {Channel} from "../../models/servers/channels/channel.model";
+import {GetChannelsResponse} from "../../models/servers/responses/get-channels-response.model.";
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +28,10 @@ export class ServersService {
 
   createServer(request: CreateServerRequest): Observable<Server> {
     return this._apiServer.post('/Api/Servers', request);
+  }
+
+  getChannels(serverId: string): Observable<Channel[]> {
+    return this._apiServer.get(`/Api/Servers/${serverId}/Channels`)
+      .pipe(map((s: GetChannelsResponse) => s.channels));
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, NgModule, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-message-list',
@@ -13,3 +13,8 @@ export class MessageListComponent implements OnInit {
   }
 
 }
+
+@NgModule({
+  declarations: [MessageListComponent]
+})
+export class MessageListModule {}

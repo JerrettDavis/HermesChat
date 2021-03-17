@@ -4,8 +4,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {CreateServerRequest} from "../../../../core/models/servers/requests/create-server-request.model";
-import {ServersService} from "../../../../core/services/servers/servers.service";
+import {CreateServerRequest} from '@core/models/servers/requests/create-server-request.model';
+import {ServersService} from '@core/services/servers/servers.service';
 import {NGXLogger} from "ngx-logger";
 
 @Component({

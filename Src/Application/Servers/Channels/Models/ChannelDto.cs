@@ -14,23 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System.Threading;
-using System.Threading.Tasks;
+using Application.Common.Mapping;
 using Domain.Models;
-using Microsoft.EntityFrameworkCore;
 
-namespace Application.Common.Interfaces.Data
+namespace Application.Servers.Channels.Models
 {
-    public interface IApplicationDbContext
+    public class ChannelDto : IMapFrom<Channel>
     {
-        DbSet<ApplicationUser> Users { get; set; }
-        DbSet<Channel> Channels { get; set; }
-        DbSet<Server> Servers { get; set; }
-        DbSet<ServerUser> ServerUsers { get; set; }
-
-        DbSet<TEntity> Set<TEntity>()
-            where TEntity : class;
-
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = new());
+        public string Id { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string? Topic { get; set; }
+        public bool Nsfw { get; set; }
     }
 }

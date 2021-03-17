@@ -14,23 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System.Threading;
-using System.Threading.Tasks;
-using Domain.Models;
-using Microsoft.EntityFrameworkCore;
+using System.Net;
+using Application.Servers.Services;
+using FluentValidation;
+using JetBrains.Annotations;
 
-namespace Application.Common.Interfaces.Data
+namespace Application.Servers.Channels.Queries.GetChannels
 {
-    public interface IApplicationDbContext
+    [UsedImplicitly]
+    public class GetChannelsQueryValidators :
+        AbstractValidator<GetChannelsQuery>
     {
-        DbSet<ApplicationUser> Users { get; set; }
-        DbSet<Channel> Channels { get; set; }
-        DbSet<Server> Servers { get; set; }
-        DbSet<ServerUser> ServerUsers { get; set; }
-
-        DbSet<TEntity> Set<TEntity>()
-            where TEntity : class;
-
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = new());
+        public GetChannelsQueryValidators(IServerValidators validators)
+        {
+            RuleFor(c => c.ServerId)
+                .MustAsync(validators.ServerExists)
+                .WithMessage("Server does not exist!")
+                .WithErrorCode(HttpStatusCode.NotFound.ToString());
+        }
     }
 }

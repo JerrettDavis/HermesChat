@@ -58,7 +58,11 @@ namespace Application.Servers.Commands.CreateServer
             var server = new Server(
                 request.ServerName,
                 user);
+            var channel = new Channel(
+                server,
+                "general");
             server.AddUser(user);
+            server.AddChannel(channel);
 
             await _context.Servers.AddAsync(server, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);

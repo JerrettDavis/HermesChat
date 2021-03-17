@@ -1,7 +1,7 @@
 import {Component, NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
-import {ApiAuthorizationModule} from "../../api-authorization/api-authorization.module";
+import {ApiAuthorizationModule} from "@auth/api-authorization.module";
 
 @Component({
   selector: 'app-nav-menu',
@@ -32,3 +32,4 @@ export class NavMenuComponent {
   declarations: [NavMenuComponent]
 })
 export class NavMenuModule {}
+

@@ -8,8 +8,9 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import {UserToolbarModule} from "../user-toolbar/user-toolbar.component";
-import {CreateServerDialogModule} from "../../../servers/components/create-server-dialog/create-server-dialog.component";
 import {ServersSidebarModule} from "../servers-sidebar/servers-sidebar.component";
+import {CreateServerDialogModule} from "../../../components/create-server-dialog/create-server-dialog.component";
+import {ChannelListModule} from "@modules/servers/channels/components/channel-list/channel-list.component";
 
 @Component({
   selector: 'app-channel-layout',
@@ -41,7 +42,8 @@ export class ChannelLayoutComponent implements OnInit {
     UserToolbarModule,
 
     CreateServerDialogModule,
-    ServersSidebarModule
+    ServersSidebarModule,
+    ChannelListModule
   ],
   declarations: [ChannelLayoutComponent]
 })
